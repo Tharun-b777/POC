@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import csv
 attendees={}
+present={}
 print("Enter the end time of class in hh:mm:ss ")
 h,m,s=input().split(":")
 h,m,s=int(h),int(m),int(s)
@@ -22,15 +23,15 @@ with open('attendance.csv', encoding='utf-16le') as f:
         if l[0] in attendees.keys():
             if l[1] == "Joined":
                 attendees[l[0]]+=total_time
+                del present[l[0]]
             else:
                 attendees[l[0]]-=total_time
-                
-
+                present[l[0]]=attendees[l[0]]
         else:
             attendees[l[0]]=total_time
             attendees[l[0]]=end_time -attendees[l[0]]
 for key in attendees:
-    if float(attendees[key]/60) > (duration):
-        print(str(key)+"\t\t"+str(float(attendees[key]/60)))
-
-        
+    if key in present.keys():
+        attendees[key]+=end_time
+    if float(attendees[key]/60) >= (duration):
+        print("{}".format(key))
