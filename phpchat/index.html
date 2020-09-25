@@ -1,10 +1,24 @@
 <html>
 <span id="display"></span>
-<form action="send.php" method="post">
+<form id="myform">
 	Enter Message<input type="text" name="message" id="message">
-<input type="submit" value="send">
+<button type="button" onclick="send_data()">submit</button>
 </form>
 <script>
+function send_data(){
+	var xml=new XMLHttpRequest();
+	var form_data=document.getElementById("myform");
+	xml.open("POST","send.php");
+	xml.onreadystatechange=function(){
+		if (this.readyState ==4 && this.status==200){
+			message=document.getElementById("message")
+			message.value=""
+		}
+	};
+
+	var data=new FormData(form_data);
+	xml.send(data);
+}
 setInterval(update,3);
 function update() {
 var xmlhttp=new XMLHttpRequest();
