@@ -2,7 +2,7 @@
 import csv
 attendees={}
 present={}
-def parser(f):
+def parser(f,duration,end_time):
     line=csv.reader(f,delimiter='\t',)
     next(line)
     for l in line:
@@ -38,4 +38,4 @@ if __name__ == "__main__":
     duration = float(input("Enter minimum duration to be attended "))
     # duration=55.00
     with open('attendance.csv', encoding='utf-16le') as f:
-        parser(f)
+        parser(f,duration,end_time)
