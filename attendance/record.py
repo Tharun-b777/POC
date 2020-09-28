@@ -2,15 +2,7 @@
 import csv
 attendees={}
 present={}
-print("Enter the end time of class in hh:mm:ss ")
-h,m,s=input().split(":")
-h,m,s=int(h),int(m),int(s)
-h*=3600
-m*=60
-end_time=h+m+s
-# end_time=4*3600+30*60
-duration=float(input("Enter minimum duration to be attended "))
-with open('attendance.csv', encoding='utf-16le') as f:
+def parser(f):
     line=csv.reader(f,delimiter='\t',)
     next(line)
     for l in line:
@@ -29,9 +21,21 @@ with open('attendance.csv', encoding='utf-16le') as f:
                 present[l[0]]=attendees[l[0]]
         else:
             attendees[l[0]]=total_time
-            attendees[l[0]]=end_time -attendees[l[0]]
-for key in attendees:
-    if key in present.keys():
-        attendees[key]+=end_time
-    if float(attendees[key]/60) >= (duration):
-        print("{}".format(key))
+            attendees[l[0]]-=end_time
+    for key in attendees:
+        if key in present.keys():
+            attendees[key]+=end_time
+        if float(-attendees[key]/60) >= (duration):
+            print("{} {}".format(key,-attendees[key]/60))
+if __name__ == "__main__":
+    print("Enter the end time of class in hh:mm:ss ")
+    time = input().split(":")
+    h, m, s = map(lambda x: int(x), time)
+    h *= 3600
+    m *= 60
+    end_time = h+m+s
+    # end_time=3*3600+30*60
+    duration = float(input("Enter minimum duration to be attended "))
+    # duration=55.00
+    with open('attendance.csv', encoding='utf-16le') as f:
+        parser(f)
